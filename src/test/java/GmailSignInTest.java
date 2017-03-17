@@ -1,6 +1,6 @@
+import com.hlp.test.pageobjects.EmailHomePage;
 import com.hlp.test.pageobjects.SignInPage;
 import com.hlp.util.WebUtils;
-import com.piece.pageobjects.SignInPage;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -30,37 +30,23 @@ public class GmailSignInTest {
     @Test
     public void signInSuccess()
     {
-        /SignInPage signInPage = WebUtils.goToSignInPage(driver);
+
         //1. Go to gmail site
-        driver.get("http://gmail.com");
+        SignInPage signInPage = WebUtils.goToSignInPage(driver);
         //2. Fill in the username
-        WebElement usernameTextBox =  driver.findElement(By.id("Email"));
-        usernameTextBox.clear();
-        usernameTextBox.sendKeys("iamanothergod");
-        WebElement usernameEnterButton = driver.findElement(By.id("next"));
-        usernameEnterButton.click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("Passwd")));
+        signInPage.fillInUsername(driver, "iamanothergod");
+        signInPage.clickNxt(driver);
         //3. Fill in the password
-        WebElement passwordTextBox = driver.findElement(By.id("Passwd"));
-        passwordTextBox.clear();
-        passwordTextBox.sendKeys("Iamanothergod01");
+        signInPage.fillInPassword(driver, "Iamanothergod01");
         //4. Click signin
-        WebElement signInButton = driver.findElement(By.id("signIn"));
-        // Stop persistent Cookie
-        WebElement staySignedIn = driver.findElement(By.id("PersistentCookie"));
-        // UNCHECK Stay signed in
-        staySignedIn.click();
-        signInButton.click();;
+        signInPage.clickStayLoggedIn(driver);//default is checked  Stop persistent Cookie
+        EmailHomePage emailHomePage  = signInPage.clickSignIn(driver);
         //5. verify did signin
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText("Inbox")));
-        Assert.assertTrue("Inbox should exist", driver.findElements(By.partialLinkText("Inbox")).size() > 0);
+        Assert.assertTrue("Inbox should exist", emailHomePage.isInboxExist(driver));
         //6. sign out
-        WebElement profileButtonLinkage = driver.findElement(By.cssSelector("span[class='gb_9a gbii']"));
-        profileButtonLinkage.click();
-        WebElement signOutButton = driver.findElement(By.id("gb_71"));
-        signOutButton.click();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("next")));
-        Assert.assertTrue("Should be sign in button", driver.findElements(By.id("next")).size() > 0);
+        signInPage = emailHomePage.signOut(driver);
+        //7. verify
+        Assert.assertTrue("Should be sign in button", signInPage.isNextButton(driver));
 
 
     }
