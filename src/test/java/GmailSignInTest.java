@@ -70,10 +70,9 @@ public class GmailSignInTest {
         signInPage.clickStayLoggedIn(driver);//default is checked  Stop persistent Cookie
         EmailHomePage emailHomePage  = signInPage.clickSignIn(driver);
         //verify signed in
-        Assert.assertTrue("Inbox should exist", driver.findElements(By.partialLinkText("Inbox")).size() > 0);
+        Assert.assertTrue("Inbox should exist", emailHomePage.isInboxExist(driver));
         // 2. Click compose
         emailHomePage.clickComposeButton(driver);
-        
         // 3. Fill in recipient
         emailHomePage.fillInRecipient(driver, "");
         
