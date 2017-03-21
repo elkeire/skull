@@ -52,4 +52,5 @@ public class SignInPage {
     public boolean isNextButton(WebDriver driver) {
         return driver.findElements(By.id("next")).size() > 0;
     }
+
 }
