@@ -27,6 +27,8 @@ public class GmailSignInTest {
         System.setProperty("webdriver.chrome.driver", System.getProperty("user.dir") + "/drivers/chromedriver.exe");
     }
 
+
+
     @Test
     public void signInSuccess()
     {
@@ -68,12 +70,11 @@ public class GmailSignInTest {
         WebElement passwordTextBox = driver.findElement(By.id("Passwd"));
         passwordTextBox.clear();
         passwordTextBox.sendKeys("Iamanothergod01");
+        WebElement staySignedIn = driver.findElement(By.id("PersistentCookie"));
+        // Stop persistent Cookie // UNCHECK Stay signed in
+        staySignedIn.click();
         //4. Click signin
         WebElement signInButton = driver.findElement(By.id("signIn"));
-        // Stop persistent Cookie
-        WebElement staySignedIn = driver.findElement(By.id("PersistentCookie"));
-        // UNCHECK Stay signed in
-        staySignedIn.click();
         signInButton.click();
             //verify signed in
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.partialLinkText("Inbox")));
